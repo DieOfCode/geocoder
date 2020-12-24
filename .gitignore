@@ -1,0 +1,10 @@
+/venv
+/addr.csv
+/geo.log
+/service.py
+/xml_parser.py
+/ural-fed-district-latest.osm
+/test.csv
+/map.osm
+geo/__pycache__
+.idea
