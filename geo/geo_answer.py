@@ -6,19 +6,14 @@ class GeoAnswer:
     region: str
     city: str
     street: str
-    building_number: str
-    building_literal:str
-    latitude: float
-    longitude: float
+    building_number: int
+    building_literal: str = None
+    latitude: float = None
+    longitude: float = None
     country: str = "РОССИЯ"
 
     def __str__(self) -> str:
-        return f"""
-        Координаты:{self.latitude},{self.longitude}
-        Страна:Россия
-        Регион:{self.region}
-        Населённый Пункт:{self.city}
-        Улица:{self.street}
-        Дом:{self.building_number}{self.building_literal 
-        if self.building_literal else ""} 
-        """
+        return f"Координаты:{self.latitude},{self.longitude}\nСтрана:Россия\n" \
+               f"Регион:{self.region}\nНаселённый Пункт:{self.city}\n" \
+               f"Улица:{self.street}\nДом:{self.building_number}" \
+               f"{self.building_literal if self.building_literal else ''}"

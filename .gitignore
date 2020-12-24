@@ -8,3 +8,9 @@
 /map.osm
 geo/__pycache__
 .idea
+.coverage
+.pytest_cache
+geocoder_test/__pycache__/
+geocoder_test/geo.log
+htmlcov/
+

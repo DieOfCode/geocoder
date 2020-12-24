@@ -1,13 +1,9 @@
 import dataclasses
-import json
-from collections import namedtuple
 from typing import Tuple
 
 import psycopg2
 
-from geo.geo_exception import NoGeocoderDataException, UnknownCity
-
-CITY = ['Бердяжки', ]
+from geo.geo_exception import UnknownCity
 
 
 @dataclasses.dataclass()
@@ -39,9 +35,9 @@ class AddressParser:
                     raise UnknownCity()
         return self.city, self.street, int(self.number)
 
-    def is_valid_city(self, city):
+    def is_valid_city(self, city) -> bool:
         with psycopg2.connect(host="localhost", dbname="test_geocoder_data",
-                               user="postgres") as connection:
+                              user="postgres") as connection:
             cur = connection.cursor()
             cur.execute("select exists (select 1 from cities where city=%s)",
                         (city,))
