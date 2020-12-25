@@ -13,4 +13,4 @@ geo/__pycache__
 geocoder_test/__pycache__/
 geocoder_test/geo.log
 htmlcov/
-
+geo/geo.log

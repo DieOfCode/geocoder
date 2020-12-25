@@ -17,7 +17,7 @@ def test_get_answer(test_input, test_cli: CLI):
         assert answer == GeoAnswer(region='Ямайка',
                                    city='Бердяжки',
                                    street='улица Тургенева',
-                                   building_number=4,
+                                   building="4",
                                    latitude=56.841067,
                                    longitude=60.614769)
         break

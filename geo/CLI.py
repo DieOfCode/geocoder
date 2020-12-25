@@ -1,7 +1,6 @@
 import logging
 from dataclasses import dataclass
 
-from geo.address_parser import AddressParser
 from geo.geo_exception import UnknownCity, UnknownAddress, \
     NoGeocoderDataException
 from geo.geocoder import Geocoder
@@ -20,9 +19,9 @@ class CLI:
         while True:
             geocoder = Geocoder()
             if self._status == "start":
-                print("""Введи адресс, получи более интересную информацию
-                Формат ввода адресса: Город Улица Номер дома
-                Чтобы прекратить работу введите конец\n""")
+                print("Введи адресс, получи более интересную информацию \n"
+                      "Формат ввода адресса: Город Улица Номер дома\n"
+                      "Чтобы прекратить работу введите конец\n""")
                 self.raw_address = input()
                 if self.raw_address.lower() == "конец":
                     break
