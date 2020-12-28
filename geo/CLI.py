@@ -17,13 +17,13 @@ class CLI:
 
     def get_answer(self) -> str:
         while True:
-            geocoder = Geocoder()
+
             if self._status == "start":
                 print("Введи адресс, получи более интересную информацию \n"
                       "Формат ввода адресса: Город Улица Номер дома\n"
-                      "Чтобы прекратить работу введите конец\n""")
+                      "Чтобы прекратить работу введите конец или \\end \n""")
                 self.raw_address = input()
-                if self.raw_address.lower() == "конец":
+                if self.raw_address.lower() == "\\end":
                     break
                 self._status = "wait_answer"
             if self._status == "wait_answer":
@@ -34,7 +34,8 @@ class CLI:
                     self._status = "start"
 
                 try:
-                    yield geocoder.find_geo_data(self.raw_address)
+                    geocoder = Geocoder(self.raw_address)
+                    yield geocoder.find_geo_data()
                     self._status = "start"
                 except NoGeocoderDataException as geocoder_data_exception:
                     geocoder_data_exception.exception_handling(

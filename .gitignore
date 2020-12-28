@@ -14,3 +14,6 @@ geocoder_test/__pycache__/
 geocoder_test/geo.log
 htmlcov/
 geo/geo.log
+config/__pycache__/
+geo_http/__pycache__/
+geo_http/geo.log

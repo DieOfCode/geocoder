@@ -23,3 +23,7 @@ class UnknownAddress(GeoException):
 
 class NoGeocoderDataException(GeoException):
     message = "Мы не знаем где это,здесь водятся драконы"
+
+
+class MissingGeoInformation(GeoException):
+    message = "Отсутствуют необхоимые аргументы"

@@ -2,17 +2,19 @@ from dataclasses import dataclass
 
 import psycopg2
 
+from config import base
 from geo.address_parser import AddressParser
 from geo.geo_answer import GeoAnswer
 from geo.geo_exception import NoGeocoderDataException
 
 
 @dataclass
-class Geocoder():
-    database: str = "test_geocoder_data"
-    user: str = "postgres"
-    host: str = "localhost"
-    port: str = "5432"
+class Geocoder:
+    raw_address: str
+    database: str = base.DATABASE
+    user: str = base.USER
+    host: str = base.HOST
+    port: str = base.DATABASE_PORT
 
     def data_base_connect(self):
         return psycopg2.connect(database=self.database,
@@ -20,9 +22,9 @@ class Geocoder():
                                 host=self.host,
                                 port=self.port)
 
-    def find_geo_data(self, raw_address: str) -> GeoAnswer:
+    def find_geo_data(self) -> GeoAnswer:
         address_parser = AddressParser()
-        parse_address = address_parser.get_parse_address(raw_address)
+        parse_address = address_parser.get_parse_address(self.raw_address)
         with self.data_base_connect() as connection:
             cur = connection.cursor()
             cur.execute(
@@ -39,7 +41,4 @@ class Geocoder():
             data = cur.fetchall()
             if not data:
                 raise NoGeocoderDataException()
-            return GeoAnswer(region=data[0][0], city=data[0][1],
-                             street=data[0][2], building=data[0][3],
-                             latitude=float(data[0][4]),
-                             longitude=float(data[0][5]))
+            return GeoAnswer(data[0])

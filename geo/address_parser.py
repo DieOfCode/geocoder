@@ -3,6 +3,8 @@ from typing import Tuple
 
 import psycopg2
 
+from geo.geo_exception import NoGeocoderDataException
+
 
 @dataclasses.dataclass()
 class AddressParser:
@@ -13,7 +15,7 @@ class AddressParser:
     literal = None
 
     def get_parse_address(self, raw_address: str) -> Tuple[str, str, str]:
-        address_fragment = raw_address.split(" ")
+        address_fragment = raw_address.strip(" ").split(" ")
         for i in range(len(address_fragment)):
             raw_city = " ".join(address_fragment[:i])
             if self.is_valid_city(raw_city) and raw_city != '':
@@ -31,7 +33,7 @@ class AddressParser:
                     break
         self.house = " ".join(address_fragment)
         if self.house == "" or self.street == "" or self.house == "":
-            raise Exception
+            raise NoGeocoderDataException
         return self.city, self.street, self.house
 
     def is_valid_city(self, city) -> bool:

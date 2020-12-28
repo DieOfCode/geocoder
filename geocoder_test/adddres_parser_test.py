@@ -10,9 +10,6 @@ def test_address_parser() -> AddressParser:
     return AddressParser()
 
 
-
-
-
 @patch("geo.address_parser.AddressParser.is_valid_city", return_value=True)
 def test_city_and_street_without_dash(test_valid_city,
                                       test_address_parser: AddressParser):

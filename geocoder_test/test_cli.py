@@ -1,3 +1,4 @@
+from decimal import Decimal
 from unittest.mock import patch
 
 from pytest import fixture
@@ -14,10 +15,7 @@ def test_cli() -> CLI:
 @patch('builtins.input', return_value="Бердяжки улица Тургенева 4")
 def test_get_answer(test_input, test_cli: CLI):
     for answer in test_cli.get_answer():
-        assert answer == GeoAnswer(region='Ямайка',
-                                   city='Бердяжки',
-                                   street='улица Тургенева',
-                                   building="4",
-                                   latitude=56.841067,
-                                   longitude=60.614769)
+        assert answer == GeoAnswer(('Ямайка', 'Бердяжки', 'улица Тургенева',
+                                    '4', Decimal('56.841067'),
+                                    Decimal('60.614769')))
         break
