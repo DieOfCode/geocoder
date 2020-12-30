@@ -1,4 +1,5 @@
 import logging
+from typing import Tuple
 
 import psycopg2
 
@@ -36,7 +37,7 @@ class GeoDatabase:
             (city,))
         return self.database_cursor.fetchone()[0]
 
-    def is_valid_street(self, street):
+    def is_valid_street(self, street) -> bool:
         self.database_cursor.execute(
             "select exists (select 1 "
             "from streets where position(%s in street)>0)",
@@ -49,19 +50,20 @@ class GeoDatabase:
             (house,))
         return self.database_cursor.fetchone()[0]
 
-    def select_region(self, city):
-        self.database_cursor.execute("select regions.region_id,region "
-                                     "from regions inner join region_city "
-                                     "on region_city.region_id = regions.region_id "
-                                     "inner join cities "
-                                     "on cities.city_id = region_city.city_id "
-                                     "where city = %s", (city,))
+    def select_region(self, city) -> Tuple[int, str]:
+        self.database_cursor.execute(
+            "select regions.region_id,region "
+            "from regions inner join region_city "
+            "on region_city.region_id = regions.region_id "
+            "inner join cities "
+            "on cities.city_id = region_city.city_id "
+            "where city = %s", (city,))
         region_data = self.database_cursor.fetchone()
         if region_data is None:
             raise UnknownRegion()
         return region_data
 
-    def select_city_id(self, city):
+    def select_city_id(self, city) -> int:
         self.database_cursor.execute(
             "select city_id from cities where city=%s", (city,))
         city_id = self.database_cursor.fetchone()[0]
@@ -69,7 +71,7 @@ class GeoDatabase:
             raise UnknownCity()
         return city_id
 
-    def select_street_id(self, city_id, street):
+    def select_street_id(self, city_id, street) -> int:
         self.database_cursor.execute(
             "select streets.street_id "
             "from streets inner join city_street "
@@ -81,7 +83,7 @@ class GeoDatabase:
             raise UnknownStreet()
         return street_id
 
-    def select_building_id(self, street_id=None, building=None):
+    def select_building_id(self, street_id=None, building=None) -> int:
         self.database_cursor.execute(
             "select buildings.building_id from buildings "
             "inner join street_building "
@@ -94,7 +96,8 @@ class GeoDatabase:
 
         return building_id
 
-    def get_coordinate(self, region_id, city_id, street_id, building_id):
+    def get_coordinate(self, region_id, city_id, street_id, building_id) -> \
+            Tuple[float, float]:
         self.database_cursor.execute(
             "select lat,lon from geocode where region_id = %s "
             "and city_id = %s and street_id = %s and building_id = %s",
