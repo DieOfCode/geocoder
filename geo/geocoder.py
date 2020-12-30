@@ -1,44 +1,30 @@
 from dataclasses import dataclass
 
-import psycopg2
-
-from config import base
 from geo.address_parser import AddressParser
 from geo.geo_answer import GeoAnswer
-from geo.geo_exception import NoGeocoderDataException
+from geo.repository import GeoDatabase
 
 
 @dataclass
 class Geocoder:
     raw_address: str
-    database: str = base.DATABASE
-    user: str = base.USER
-    host: str = base.HOST
-    port: str = base.DATABASE_PORT
-
-    def data_base_connect(self):
-        return psycopg2.connect(database=self.database,
-                                user=self.user,
-                                host=self.host,
-                                port=self.port)
+    database: GeoDatabase
 
     def find_geo_data(self) -> GeoAnswer:
         address_parser = AddressParser()
-        parse_address = address_parser.get_parse_address(self.raw_address)
-        with self.data_base_connect() as connection:
-            cur = connection.cursor()
-            cur.execute(
-                "select region,city,street,house,lat,lon "
-                "from cities inner join geocode "
-                "on cities.city_id = geocode.city_id "
-                "inner join regions on geocode.region_id = regions.region_id "
-                "inner join streets on geocode.street_id = streets.street_id "
-                "inner join buildings "
-                "on geocode.building_id = buildings.building_id "
-                "where city = %s "
-                "and position(%s in street)>0 and buildings.house = %s",
-                parse_address)
-            data = cur.fetchall()
-            if not data:
-                raise NoGeocoderDataException()
-            return GeoAnswer(data[0])
+        parse_address = address_parser.get_parse_address(self.raw_address,
+                                                         self.database)
+        region_id, region = self.database.select_region(parse_address.city)
+        print(region_id, region)
+        city_id = self.database.select_city_id(parse_address.city)
+        street_id = self.database.select_street_id(city_id,
+                                                   address_parser.street)
+        building_id = self.database.select_building_id(street_id,
+                                                       parse_address.house)
+        coordinate = self.database.get_coordinate(region_id, city_id,
+                                                  street_id, building_id)
+        return GeoAnswer(region=region, city=parse_address.city,
+                         street=parse_address.street,
+                         building=parse_address.house,
+                         latitude=float(coordinate[0]),
+                         longitude=float(coordinate[1]))

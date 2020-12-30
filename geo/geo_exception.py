@@ -9,8 +9,6 @@ class GeoException(Exception):
 
     def exception_handling(self, raw_address) -> None:
         print(self.message)
-        logging.exception(
-            "address:{} ,{}".format(raw_address, self.message), )
 
 
 class UnknownCity(GeoException):
@@ -27,3 +25,19 @@ class NoGeocoderDataException(GeoException):
 
 class MissingGeoInformation(GeoException):
     message = "Отсутствуют необхоимые аргументы"
+
+
+class UnknownRegion(GeoException):
+    message = "Неизвестный район"
+
+
+class UnknownStreet(GeoException):
+    message = "Неизвестный улица"
+
+
+class UnknownBuilding(GeoException):
+    message = "Неизвестный номер дома"
+
+
+class NoInfoInDatabase(GeoException):
+    message = "Информции по данному объекту нет"

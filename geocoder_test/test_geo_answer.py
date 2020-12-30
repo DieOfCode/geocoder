@@ -5,9 +5,9 @@ from geo.geo_answer import GeoAnswer
 
 @fixture
 def test_geo_answer() -> GeoAnswer:
-    return GeoAnswer(("Свердловская область", "Екатеринбург",
-                      "Тургенева", "4",
-                      56.34543, 60.234234))
+    return GeoAnswer(region="Свердловская область", city="Екатеринбург",
+                     street="Тургенева", building="4",
+                     latitude=56.34543, longitude=60.234234)
 
 
 def test_answer(test_geo_answer):

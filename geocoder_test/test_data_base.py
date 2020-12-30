@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from typing import List
+from typing import List, Tuple
 
 
 class TestCursor:
@@ -14,6 +14,9 @@ class TestCursor:
                  '4',
                  Decimal('56.841067'),
                  Decimal('60.614769')), ]
+
+    def fetchone(self)-> Tuple[int, float]:
+        return 1,1.0
 
 
 class TestDatabase:
