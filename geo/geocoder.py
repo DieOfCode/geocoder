@@ -15,7 +15,6 @@ class Geocoder:
         parse_address = address_parser.get_parse_address(self.raw_address,
                                                          self.database)
         region_id, region = self.database.select_region(parse_address.city)
-        print(region_id, region)
         city_id = self.database.select_city_id(parse_address.city)
         street_id = self.database.select_street_id(city_id,
                                                    address_parser.street)

@@ -15,8 +15,9 @@ class TestCursor:
                  Decimal('56.841067'),
                  Decimal('60.614769')), ]
 
-    def fetchone(self)-> Tuple[int, float]:
-        return 1,1.0
+    def fetchone(self) -> Tuple[int, float]:
+        print(1)
+        return 1, 1.0
 
 
 class TestDatabase:

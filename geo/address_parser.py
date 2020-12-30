@@ -12,7 +12,6 @@ class AddressParser:
 
     @classmethod
     def get_parse_address(cls, raw_address: str, database: GeoDatabase):
-        print(raw_address)
         address_fragment = raw_address.strip(" ").split(" ")
         for i in range(len(address_fragment)):
             raw_city = " ".join(address_fragment[:i])
