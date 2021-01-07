@@ -7,4 +7,3 @@ USER = "postgres"
 PASSWORD = os.environ.get('password')
 
 HTTP_PORT = 8080
-
