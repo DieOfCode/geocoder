@@ -9,6 +9,7 @@ logging.basicConfig(filename="geo.log", filemode="w",
 
 DATABASE = database_connect()
 
+
 def main():
     _status: str = "start"
     raw_data = ""

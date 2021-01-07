@@ -1,10 +1,10 @@
-from typing import NewType
+import os
 
-DATABASE = "1"
+DATABASE = "geo"
 HOST = "127.0.0.1"
 DATABASE_PORT = "5432"
 USER = "postgres"
-PASSWORD = 'Vanish878'
+PASSWORD = os.environ.get('password')
 
 HTTP_PORT = 8080
 

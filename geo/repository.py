@@ -1,9 +1,7 @@
 import logging
-from dataclasses import dataclass
 from typing import Tuple
 
 import psycopg2
-from psycopg2._psycopg import connection, cursor
 
 from config import base
 from geo.geo_exception import UnknownRegion, UnknownCity, UnknownStreet, \

@@ -2,8 +2,6 @@ from decimal import Decimal
 
 from typing import List, Tuple
 
-from psycopg2._psycopg import cursor
-
 
 class TestCursor:
 
