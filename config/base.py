@@ -7,4 +7,3 @@ USER = "postgres"
 
 HTTP_PORT = 8080
 
-# AddressParser = NewType('AddressParser', AddressParser)
