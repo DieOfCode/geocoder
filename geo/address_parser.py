@@ -29,6 +29,6 @@ class AddressParser:
                     address_fragment = address_fragment[i:]
                     break
         cls.house = " ".join(address_fragment)
-        if cls.house == "" or cls.street == "" or cls.house == "":
+        if cls.house == ""  or cls.house == "":
             raise NoGeocoderDataException
         return cls

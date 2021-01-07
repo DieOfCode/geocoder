@@ -1,7 +1,9 @@
 import logging
+from dataclasses import dataclass
 from typing import Tuple
 
 import psycopg2
+from psycopg2._psycopg import connection, cursor
 
 from config import base
 from geo.geo_exception import UnknownRegion, UnknownCity, UnknownStreet, \
@@ -17,7 +19,8 @@ def database_connect():
         connection = psycopg2.connect(database=base.DATABASE,
                                       user=base.USER,
                                       host=base.HOST,
-                                      port=base.DATABASE_PORT)
+                                      port=base.DATABASE_PORT,
+                                      password=base.PASSWORD)
     except Exception as exception:
         print("Проблемы с подключением к базе данных")
         logging.exception("{} {}"
@@ -29,7 +32,8 @@ def database_connect():
 
 
 class GeoDatabase:
-    database_cursor = database_connect()
+    def __init__(self, database_cursor):
+        self.database_cursor = database_cursor
 
     def is_valid_city(self, city) -> bool:
         self.database_cursor.execute(
@@ -42,12 +46,6 @@ class GeoDatabase:
             "select exists (select 1 "
             "from streets where position(%s in street)>0)",
             (street,))
-        return self.database_cursor.fetchone()[0]
-
-    def is_valid_home(self, house) -> bool:
-        self.database_cursor.execute(
-            "select exists (select 1 from buildings where house=%s)",
-            (house,))
         return self.database_cursor.fetchone()[0]
 
     def select_region(self, city) -> Tuple[int, str]:

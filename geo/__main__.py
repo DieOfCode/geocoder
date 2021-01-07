@@ -2,11 +2,12 @@ import logging
 
 from geo.geo_exception import GeoException
 from geo.geocoder import Geocoder
-from geo.repository import GeoDatabase
+from geo.repository import GeoDatabase, database_connect
 
 logging.basicConfig(filename="geo.log", filemode="w",
                     format='%(name)s - %(levelname)s - %(message)s')
 
+DATABASE = database_connect()
 
 def main():
     _status: str = "start"
@@ -37,7 +38,7 @@ def main():
                 _status = "start"
 
             try:
-                geo_database = GeoDatabase()
+                geo_database = GeoDatabase(DATABASE)
                 geocoder = Geocoder(raw_data, geo_database)
                 yield geocoder.find_geo_data()
                 _status = "start"
