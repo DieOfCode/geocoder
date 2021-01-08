@@ -5,14 +5,15 @@ from flask import Flask, request
 
 from geo.geo_exception import GeoException
 from geo.geocoder import Geocoder
-from geo.repository import GeoDatabase
+from geo.repository import GeoDatabase, database_connect
 from geo_http import geo_http_exception
 
 app = Flask(__package__)
 
 logger = logging.getLogger(__name__)
 
-DATABASE = GeoDatabase()
+DATABASE_CONNECT = database_connect()
+DATABASE = GeoDatabase(DATABASE_CONNECT)
 
 
 def json_api(func):
